@@ -8,20 +8,39 @@ app = Flask(__name__,
             template_folder='ciml-client/build')
 CORS(app)
 
+MIN_MAX = {
+    'side': (-1.0, 1.0),
+    'return_t5': (-0.931, 11.608),
+    'return_t30': (-0.947, 12.0),
+    'vol_sh_out_pct': (0.0, 77.009),
+    'stake_pct_chg': (-5.0, 94.33),
+    'tran_value': (0.0, 11693.048),
+    'mkt_cap': (0.0, 1362.6),
+    'prev_tran_num': (0.0, 534.0),
+    'hit_rate_5d': (0.0, 1.0),
+    'hit_rate_30d': (0.0, 1.0),
+    'hit_rate_90d': (0.0, 1.0),
+}
+
+FIELDS_TO_SCALE = ['return_t5', 'return_t30', 'vol_sh_out_pct', 'stake_pct_chg', 'tran_value', 'mkt_cap',
+                'prev_tran_num', 'hit_rate_5d', 'hit_rate_30d', 'hit_rate_90d']
+
 def get_input_from_args(args):
     side = 1.0 if args.get('side') == "Buy" else 0.0
-    return_t5 = float(args.get('return_t5'))
-    return_t30 = float(args.get('return_t30'))
-    vol_sh_out_pct = float(args.get('vol_sh_out_pct'))
-    stake_pct_chg = float(args.get('stake_pct_chg'))
-    tran_value = float(args.get('tran_value'))
-    mkt_cap = float(args.get('mkt_cap'))
-    prev_tran_num = float(args.get('prev_tran_num'))
-    hit_rate_5d = float(args.get('hit_rate_5d'))
-    hit_rate_30d = float(args.get('hit_rate_30d'))
-    hit_rate_90d = float(args.get('hit_rate_90d'))
-    return np.array([[side, return_t5, return_t30, vol_sh_out_pct, stake_pct_chg, tran_value, mkt_cap,
-                prev_tran_num, hit_rate_5d, hit_rate_30d, hit_rate_90d]])
+
+    values_after_scaling = [(float(args.get(fld)) - MIN_MAX[fld][0]) / (MIN_MAX[fld][1] - MIN_MAX[fld][0]) 
+        for fld in FIELDS_TO_SCALE]
+    # return_t5 = float(args.get('return_t5'))
+    # return_t30 = float(args.get('return_t30'))
+    # vol_sh_out_pct = float(args.get('vol_sh_out_pct'))
+    # stake_pct_chg = float(args.get('stake_pct_chg'))
+    # tran_value = float(args.get('tran_value'))
+    # mkt_cap = float(args.get('mkt_cap'))
+    # prev_tran_num = float(args.get('prev_tran_num'))
+    # hit_rate_5d = float(args.get('hit_rate_5d'))
+    # hit_rate_30d = float(args.get('hit_rate_30d'))
+    # hit_rate_90d = float(args.get('hit_rate_90d'))
+    return np.array([[side] + values_after_scaling])
 
 
 @app.route('/')
@@ -94,7 +113,18 @@ def knn():
 def random_data():
     X_test, X_train, y_test_30d, y_test_5d, y_test_90d, y_train_30d, y_train_5d, y_train_90d = get_data()
     idx = randint(0, len(X_test)-1)
-    return jsonify(X_test.iloc[idx].to_dict())
+    data_before_scaling = X_test.iloc[idx].to_dict()
+    data_after_scaling = {}
+    for fld, value in data_before_scaling.items():
+        if fld in FIELDS_TO_SCALE:
+            data_after_scaling[fld] = data_before_scaling[fld] * (MIN_MAX[fld][1] - MIN_MAX[fld][0]) + MIN_MAX[fld][0]
+        else:
+            data_after_scaling[fld] = data_before_scaling[fld]
+
+        if fld == "prev_tran_num":
+            data_after_scaling[fld] = int(data_after_scaling[fld])
+        
+    return jsonify(data_after_scaling)
 
 def get_data(negative_label_as_zero=False):
     import pandas as pd

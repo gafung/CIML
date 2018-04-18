@@ -34,13 +34,13 @@ class App extends Component {
         {id: 4, name: 'SVM', k: 37, kernal: "linear"},
       ],
       'side': "Buy",
-      'return_t5': 0.1, 
+      'return_t5': 0.01, 
       "return_t30": 0.2, 
-      "vol_sh_out_pct": 0.00008, 
-      "stake_pct_chg": 0.05,
-      "tran_value": 0.00003,
-      "mkt_cap": 0.004,
-      "prev_tran_num": 0.02,
+      "vol_sh_out_pct": 0.15, 
+      "stake_pct_chg": 0.003,
+      "tran_value": 2.824,
+      "mkt_cap": 1.8,
+      "prev_tran_num": 10,
       "hit_rate_5d": 0.4,
       "hit_rate_30d": 0.6,
       "hit_rate_90d": 0.8,
@@ -223,29 +223,33 @@ class App extends Component {
             <Row gutter={16}>
               <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Card title="Inputs">
-                  <Form layout="inline"><FormItem label="side"><Select value={this.state["side"]} onChange={this.handleInputChanged_side.bind(this)}><Option value={"Buy"}>Buy</Option><Option value={"Sell"}>Sell</Option></Select></FormItem></Form>
-                  <Form layout="inline"><FormItem label="return_t5"><InputNumber value={this.state["return_t5"]} onChange={this.handleInputChanged_return_t5.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="return_t30"><InputNumber value={this.state["return_t30"]} onChange={this.handleInputChanged_return_t30.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="vol_sh_out_pct"><InputNumber value={this.state["vol_sh_out_pct"]} onChange={this.handleInputChanged_vol_sh_out_pct.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="stake_pct_chg"><InputNumber value={this.state["stake_pct_chg"]} onChange={this.handleInputChanged_stake_pct_chg.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="tran_value"><InputNumber value={this.state["tran_value"]} onChange={this.handleInputChanged_tran_value.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="mkt_cap"><InputNumber value={this.state["mkt_cap"]} onChange={this.handleInputChanged_mkt_cap.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="prev_tran_num"><InputNumber value={this.state["prev_tran_num"]} onChange={this.handleInputChanged_prev_tran_num.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="hit_rate_5d"><InputNumber value={this.state["hit_rate_5d"]} onChange={this.handleInputChanged_hit_rate_5d.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="hit_rate_30d"><InputNumber value={this.state["hit_rate_30d"]} onChange={this.handleInputChanged_hit_rate_30d.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem label="hit_rate_90d"><InputNumber value={this.state["hit_rate_90d"]} onChange={this.handleInputChanged_hit_rate_90d.bind(this)} step={0.00001} /></FormItem></Form>
-                  <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleLoadTestData.bind(this)} loading={this.state.loadingTestData}>Load Test Data</Button></FormItem></Form>
+                  <div style={{textAlign: 'left'}}>
+                    <Form layout="inline"><FormItem label="side"><Select value={this.state["side"]} onChange={this.handleInputChanged_side.bind(this)}><Option value={"Buy"}>Buy</Option><Option value={"Sell"}>Sell</Option></Select></FormItem></Form>
+                    <Form layout="inline"><FormItem label="return_t5"><InputNumber value={this.state["return_t5"]} onChange={this.handleInputChanged_return_t5.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="return_t30"><InputNumber value={this.state["return_t30"]} onChange={this.handleInputChanged_return_t30.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="vol_sh_out_pct (%)"><InputNumber value={this.state["vol_sh_out_pct"]} onChange={this.handleInputChanged_vol_sh_out_pct.bind(this)} step={0.0001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="stake_pct_chg (%)"><InputNumber value={this.state["stake_pct_chg"]} onChange={this.handleInputChanged_stake_pct_chg.bind(this)} step={0.0001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="tran_value"><InputNumber value={this.state["tran_value"]} onChange={this.handleInputChanged_tran_value.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="mkt_cap (Billion HKD)"><InputNumber value={this.state["mkt_cap"]} onChange={this.handleInputChanged_mkt_cap.bind(this)} step={0.01} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="prev_tran_num"><InputNumber value={this.state["prev_tran_num"]} onChange={this.handleInputChanged_prev_tran_num.bind(this)} step={1} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="hit_rate_5d"><InputNumber value={this.state["hit_rate_5d"]} onChange={this.handleInputChanged_hit_rate_5d.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="hit_rate_30d"><InputNumber value={this.state["hit_rate_30d"]} onChange={this.handleInputChanged_hit_rate_30d.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem label="hit_rate_90d"><InputNumber value={this.state["hit_rate_90d"]} onChange={this.handleInputChanged_hit_rate_90d.bind(this)} step={0.001} /></FormItem></Form>
+                    <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleLoadTestData.bind(this)} loading={this.state.loadingTestData}>Load Test Data</Button></FormItem></Form>
+                  </div>
                 </Card>
               </Col>
               <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Card title="Models" style={{textAlign: 'left'}}>
-                  {forms}
-                  <Form layout="inline"><FormItem><Button type="dashed" onClick={this.handleAddModel.bind(this)}><Icon type="plus" /> Add Model</Button></FormItem></Form>
-                  <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleSubmit.bind(this)} loading={this.state.loadingOutput}>Submit</Button></FormItem></Form>
+                <Card title="Models">
+                  <div style={{textAlign: 'left'}}>
+                    {forms}
+                    <Form layout="inline"><FormItem><Button type="dashed" onClick={this.handleAddModel.bind(this)}><Icon type="plus" /> Add Model</Button></FormItem></Form>
+                    <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleSubmit.bind(this)} loading={this.state.loadingOutput}>Submit</Button></FormItem></Form>
+                  </div>
                 </Card>
               </Col>
               <Col xs={24} sm={24} md={8} lg={8} xl={8}>
-                <Card title="Outputs">
+                <Card title="Outputs" >
                   <Table size="small" bordered columns={outputColumns} dataSource={this.state.outputData} pagination={false}></Table>
                 </Card>
               </Col>
