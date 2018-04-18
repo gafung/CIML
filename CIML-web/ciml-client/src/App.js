@@ -183,7 +183,7 @@ class App extends Component {
       <Option key={model} value={model}>{model}</Option>
     );
 
-    const forms = this.state.requestedModels.map((model, i)=>{
+    const forms = this.state.requestedModels.map((model)=>{
 
       let argFormItem;
       if(model["name"] === "KNN") {
@@ -204,7 +204,7 @@ class App extends Component {
 
       const removeModelButton = (this.state.requestedModels.length >= 2) ? <FormItem><Icon style={{cursor: "pointer"}} type="minus-circle-o" onClick={()=>this.removeModel(model["id"])}/></FormItem> : null;
         
-      return (<Form layout="inline" key={i}>
+      return (<Form layout="inline" key={model["id"]}>
         {removeModelButton}
         <FormItem label="Model">
           <Select defaultValue={model["name"]} onChange={this.createRequestedModelChangedHandler(model["id"], "name").bind(this)}>
@@ -221,7 +221,7 @@ class App extends Component {
           <Header><div style={{color: 'white'}}>COMP7404 - Insider Problem</div></Header>
           <Content>
             <Row gutter={16}>
-              <Col span={8}>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Card title="Inputs">
                   <Form layout="inline"><FormItem label="side"><Select value={this.state["side"]} onChange={this.handleInputChanged_side.bind(this)}><Option value={"Buy"}>Buy</Option><Option value={"Sell"}>Sell</Option></Select></FormItem></Form>
                   <Form layout="inline"><FormItem label="return_t5"><InputNumber value={this.state["return_t5"]} onChange={this.handleInputChanged_return_t5.bind(this)} step={0.00001} /></FormItem></Form>
@@ -237,14 +237,14 @@ class App extends Component {
                   <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleLoadTestData.bind(this)} loading={this.state.loadingTestData}>Load Test Data</Button></FormItem></Form>
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Card title="Models" style={{textAlign: 'left'}}>
                   {forms}
                   <Form layout="inline"><FormItem><Button type="dashed" onClick={this.handleAddModel.bind(this)}><Icon type="plus" /> Add Model</Button></FormItem></Form>
                   <Form layout="inline"><FormItem><Button type="primary" onClick={this.handleSubmit.bind(this)} loading={this.state.loadingOutput}>Submit</Button></FormItem></Form>
                 </Card>
               </Col>
-              <Col span={8}>
+              <Col xs={24} sm={24} md={8} lg={8} xl={8}>
                 <Card title="Outputs">
                   <Table size="small" bordered columns={outputColumns} dataSource={this.state.outputData} pagination={false}></Table>
                 </Card>
