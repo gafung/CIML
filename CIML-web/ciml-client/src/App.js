@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Axios from 'axios';
 import {Layout, Card, Row, Col, Table, Icon, Form, Select, InputNumber, Button} from 'antd';
-const {Header, Content} = Layout;
+const {Header, Content, Footer} = Layout;
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -255,6 +255,12 @@ class App extends Component {
               </Col>
             </Row>
           </Content>
+          <Footer>
+            <div><h3><u>Acronyms</u></h3></div>
+            <div>KNN = K Nearest Neighbors</div>
+            <div>SVM = Support Vector Machine</div>
+            <div>DNN = Deep Neural Network</div>
+          </Footer>
         </Layout>
       </div>
     );
