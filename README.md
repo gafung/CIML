@@ -14,7 +14,7 @@ activate insider_env
 ```
 4. Install dependencies & start local web server
 ```commandline
-cd CIML-web
+cd "Live Demo"
 pip install -r requirements.txt
 python ciml.py
 ```
