@@ -1,6 +1,6 @@
 # Environment
 - Windows 10
-- Python 3.5.3 :: Continuum Analytics, Inc. []
+- Python 3.5.3 :: Continuum Analytics, Inc.
 
 
 # How to run live demo
